@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-class PatientDetailsPage extends StatefulWidget {
-  const PatientDetailsPage({super.key});
+class AdminRequest extends StatefulWidget {
+  const AdminRequest({super.key});
 
   @override
   _PatientDetailsPageState createState() => _PatientDetailsPageState();
 }
 
-class _PatientDetailsPageState extends State<PatientDetailsPage> {
+class _PatientDetailsPageState extends State<AdminRequest> {
   bool showDetails = false;
+   bool showSecondDetails = false;
   bool isSubmitEnabled = false;
 
   TextEditingController diagnosisController = TextEditingController();
@@ -152,6 +153,67 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                             ? CrossFadeState.showSecond
                             : CrossFadeState.showFirst,
                       ),
+                      
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showSecondDetails = !showSecondDetails;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: baseSize * 0.02),
+                          padding: EdgeInsets.all(screenWidth * 0.03),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF14213D),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Patients Detail's",
+                                style: TextStyle(
+                                  fontSize: baseSize * 0.045,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Icon(
+                                showSecondDetails
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      // AnimatedCrossFade
+                      AnimatedCrossFade(
+                        duration: const Duration(milliseconds: 300),
+                        firstChild: SizedBox(height: screenHeight * 0.05),
+                        secondChild: Container(
+                          padding: EdgeInsets.all(screenWidth * 0.03),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              detailRow('Father Name', 'Karim Khan'),
+                              detailRow('CNIC Number', '71501-6783759-7'),
+                              detailRow('Date of Birth', '28/02/1993'),
+                              detailRow('Relation with','Son'),
+                              detailRow('Employee', ''),
+                            ]
+                          ),
+                        ),
+                        crossFadeState: showSecondDetails
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                      ),
 
                       // Diagnosis Section
                       SizedBox(height: screenHeight * 0.02),
@@ -286,7 +348,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.check_circle, size: 50, color: Color(0xFF14213D)),
+            Icon(Icons.check_circle_outline_outlined, size: 70, color: Color(0xFF14213D)),
             SizedBox(height: 10),
             Text(
               "Record has successfully updated",
@@ -300,14 +362,16 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF14213D),
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15), // Increased padding
+                padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15), // Increased padding
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8), // Rounded corners
                 ),
               ),
               child: const Text(
                 "OK",
-                style: TextStyle(fontSize: 16), // Increased font size
+                style: TextStyle(fontSize: 16,
+                color: Colors.white
+                ), // Increased font size
               ),
             ),
           ],

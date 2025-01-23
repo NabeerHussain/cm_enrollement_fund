@@ -14,9 +14,37 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final ApiService _apiService = ApiService(); 
+  final ApiService _apiService = ApiService();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final result = await _apiService.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (result == "success") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result, style: const TextStyle(color: Colors.white))),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           controller: _emailController,
                           decoration: InputDecoration(
-                            labelText: 'Email',
-                            hintText: 'example@example.com',
+                            labelText: 'Email /Cnic',
+                            hintText: 'example@.com/71501---',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -101,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
@@ -167,37 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: _isLoading
-                                ? null
-                                : () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                      final isSuccess = await _apiService.login(
-                                        _emailController.text.trim(),
-                                        _passwordController.text.trim(),
-                                      );
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
-
-                                      if (isSuccess) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DashboardScreen(),
-                                          ),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Invalid email or password'),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
+                            onPressed: _isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF1D1E33),
                               padding: EdgeInsets.symmetric(
@@ -219,6 +218,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: Colors.white,
                                     ),
                                   ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenHeight * 0.04,
+                        ), // Responsive spacing
+                        // Footer Text
+                        Padding(
+                          padding: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          child: Text(
+                            "Powered by SATA Technologies",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.035,
+                            ),
                           ),
                         ),
                       ],

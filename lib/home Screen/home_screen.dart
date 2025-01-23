@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../detail/request_details.dart';
+import '../adminrequest/admin_request.dart';
+// import '../detail/request_details.dart';
 
 class DashboardScreen extends StatelessWidget {
   @override
@@ -246,7 +247,7 @@ class DashboardScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PatientDetailsPage(),
+                  builder: (context) => AdminRequest(),
                 ),
               );
             },

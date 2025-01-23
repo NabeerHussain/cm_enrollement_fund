@@ -8,28 +8,55 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  bool isRememberMeChecked = false; // Tracks if "Remember Me" checkbox is selected
+  bool isRememberMeChecked = false;
+  bool isNewPasswordVisible = false; // Toggles visibility for new password
+  bool isConfirmPasswordVisible = false; // Toggles visibility for confirm password
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  String? errorMessage; // Error message if passwords don't match
+
+  void _validatePasswords() {
+    setState(() {
+      if (newPasswordController.text != confirmPasswordController.text) {
+        errorMessage = "Both passwords are not the same.";
+      } else {
+        errorMessage = null; // Clear the error if passwords match
+        // Perform "Change Password" action here
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Password changed successfully!")),
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // Prevent resizing when the keyboard is open
-      backgroundColor: const Color(0xFF1D1E33), // Navy blue background
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFF1D1E33),
       body: SafeArea(
         child: Column(
           children: [
             // Top Section: Logo and Title
             Container(
-              height: MediaQuery.of(context).size.height * 0.35, // Responsive height for the blue section
+              height: MediaQuery.of(context).size.height * 0.35,
               color: const Color(0xFF1D1E33),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Image.asset(
+                  Image.asset(
                     'assets/pngegg 1.png', // Add your logo here
-                    height: 120, // Logo size
+                    height: 120,
                   ),
-                  const SizedBox(height: 80), // Spacing between title and "Change Password"
+                  const SizedBox(height: 80),
                   const Text(
                     'Change Password',
                     style: TextStyle(
@@ -69,7 +96,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          obscureText: true, // Hides the text for passwords
+                          controller: newPasswordController,
+                          obscureText: !isNewPasswordVisible,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -80,10 +108,22 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 color: Color(0xFF1D1E33),
                               ),
                             ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isNewPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isNewPasswordVisible = !isNewPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
-                  
+
                         // Confirm Password Field
                         const Text(
                           'Confirm Password',
@@ -94,7 +134,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 8),
                         TextField(
-                          obscureText: true, // Hides the text for passwords
+                          controller: confirmPasswordController,
+                          obscureText: !isConfirmPasswordVisible,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -105,10 +146,35 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 color: Color(0xFF1D1E33),
                               ),
                             ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isConfirmPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isConfirmPasswordVisible =
+                                      !isConfirmPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
-                  
+
+                        // Error Message
+                        if (errorMessage != null)
+                          Text(
+                            errorMessage!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                            ),
+                          ),
+
+                        const SizedBox(height: 20),
+
                         // Remember Me Checkbox
                         Row(
                           children: [
@@ -131,16 +197,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                  
+
                         // Change Password Button
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Handle "Change Password" action
+                              _validatePasswords();
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1D1E33), // Navy Blue color
+                              backgroundColor: const Color(0xFF1D1E33),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),

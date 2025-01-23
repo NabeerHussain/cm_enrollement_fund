@@ -57,12 +57,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 const CircularProgressIndicator(
                   color: Colors.white,
                 ),
-                SizedBox(height: screenHeight * 0.03), // Responsive spacing
+                SizedBox(height: screenHeight * 0.04), // Responsive spacing
                 // Footer Text
                 Padding(
                   padding: EdgeInsets.only(bottom: screenHeight * 0.02),
                   child: Text(
-                    "Made by XYZ Software", // Replace with your footer text
+                    "Powered by SATA Technologies", // Replace with your footer text
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: screenWidth * 0.035, // Responsive font size
