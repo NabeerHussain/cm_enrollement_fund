@@ -49,13 +49,13 @@ class _ForgotScreenState extends State<ForgotScreen> {
                     children: [
                       Image.asset(
                         'assets/pngegg 1.png',
-                        height: 120,
+                         height: 170,
                       ),
-                      const SizedBox(height: 80),
+                      // const SizedBox(height: 70),
                       const Text(
                         'Forgot Password',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -89,6 +89,18 @@ class _ForgotScreenState extends State<ForgotScreen> {
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20,),
+                           const Center(
+                            child: Text(
+                              "Verify by",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                           ),

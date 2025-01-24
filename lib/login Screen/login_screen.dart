@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _emailController,
                           decoration: InputDecoration(
                             labelText: 'Email /Cnic',
-                            hintText: 'example@.com/71501---',
+                            // hintText: 'example@.com/71501---',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -220,9 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                           ),
                         ),
-                        SizedBox(
-                          height: screenHeight * 0.04,
-                        ), // Responsive spacing
+                       // Responsive spacing
                         // Footer Text
                         Padding(
                           padding: EdgeInsets.only(bottom: screenHeight * 0.02),
@@ -235,11 +233,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ],
+
                     ),
+                    
                   ),
                 ),
+                
               ),
+              
             ),
+            
           ],
         ),
       ),

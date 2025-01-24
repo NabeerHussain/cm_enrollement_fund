@@ -49,23 +49,25 @@ class _ChangePasswordState extends State<ChangePassword> {
             Container(
               height: MediaQuery.of(context).size.height * 0.35,
               color: const Color(0xFF1D1E33),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/pngegg 1.png', // Add your logo here
-                    height: 120,
-                  ),
-                  const SizedBox(height: 80),
-                  const Text(
-                    'Change Password',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/pngegg 1.png', // Add your logo here
+                      height: 170,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Change Password',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
