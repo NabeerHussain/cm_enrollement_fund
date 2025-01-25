@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:flutter_keychain/flutter_keychain.dart';
+
 
 class ApiService {
   final _baseUrl = "http://192.168.18.218:8000/api";
@@ -22,13 +22,13 @@ class ApiService {
             .post(
               url,
               headers: {"Content-Type": "application/json"},
-              body: jsonEncode({"email": email, "password": password}),
+              body: jsonEncode({"login": email, "password": password}),
             )
             .timeout(const Duration(seconds: 30)); // Increased timeout duration
 
         if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          await FlutterKeychain.put(key: "token", value: data["token"]);
+          // final data = jsonDecode(response.body);
+          // await FlutterKeychain.put(key: "token", value: data["token"]);
           return "success"; // Login success
         } else if (response.statusCode == 401) {
           return "Invalid email or password."; // Invalid credentials
@@ -46,18 +46,18 @@ class ApiService {
   }
 
   // Fetch token
-  Future<String?> getToken() async {
-    try {
-      return await FlutterKeychain.get(key: "token");
-    } catch (e) {
-      return null;
-    }
-  }
+  // Future<String?> getToken() async {
+  //   try {
+  //     return await FlutterKeychain.get(key: "token");
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 
   // Logout API
-  Future<void> logout() async {
-    await FlutterKeychain.remove(key: "token");
-  }
+  // Future<void> logout() async {
+  //   await FlutterKeychain.remove(key: "token");
+  // }
 
   // Helper function to check internet connectivity
   Future<bool> _checkInternetConnection() async {
