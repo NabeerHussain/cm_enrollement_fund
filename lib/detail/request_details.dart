@@ -180,7 +180,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                               ),
                             ),
                             child: Text(
-                              'Cancel',
+                              'Reject',
                               style: TextStyle(color: Colors.black),
                             ),
                           ),
@@ -200,7 +200,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                               ),
                             ),
                             child: Text(
-                              'Submit',
+                              'Approved',
                               style: TextStyle(
                                 color: isSubmitEnabled ? Colors.white : Colors.grey,
                               ),

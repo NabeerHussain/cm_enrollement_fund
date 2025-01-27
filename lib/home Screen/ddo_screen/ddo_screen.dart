@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
-import '../adminrequest/admin_request.dart';
-// import '../detail/request_details.dart';
 
-class DashboardScreen extends StatelessWidget {
+import 'package:cm_enrollement_fund/home%20Screen/ddo_screen/components/request_iteam.dart';
+import 'package:cm_enrollement_fund/home%20Screen/ddo_screen/components/state_card.dart';
+import 'package:flutter/material.dart';
+
+
+
+
+class DdoScreen extends StatelessWidget {
+  final String name;
+
+  DdoScreen({required this.name});
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -27,7 +35,7 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 40),
                 Text(
-                  'Welcome ', // Dynamic value here ${userData['name']}!
+                  'Welcome $name! ', // Dynamic value here $name!
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -65,19 +73,20 @@ class DashboardScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildStatCard(
+                            buildStatCard(
+                              // Use imported method
                               "Total Approved",
                               "35",
                               'assets/vector.png',
                               screenWidth / 3.5,
                             ),
-                            _buildStatCard(
+                            buildStatCard(
                               "Total Reject",
                               "20",
                               'assets/vector (1).png',
                               screenWidth / 3.5,
                             ),
-                            _buildStatCard(
+                            buildStatCard(
                               "Total Cases",
                               "55",
                               'assets/vector (2).png',
@@ -111,35 +120,36 @@ class DashboardScreen extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
-                          _buildRequestItem(
+                          buildRequestItem(
+                            // Use imported method
                             "Afaq Ali",
                             "Dr. Raziq Hussain",
                             "PHQ Hospital Gilgit",
                             'assets/pic.jpg',
                             context,
                           ),
-                          _buildRequestItem(
+                          buildRequestItem(
                             "Sajawal Karim",
                             "Dr. Raziq Hussain",
                             "PHQ Hospital Gilgit",
                             'assets/pic.jpg',
                             context,
                           ),
-                          _buildRequestItem(
+                          buildRequestItem(
                             "Maisum Abbas",
                             "Dr. Raziq Hussain",
                             "PHQ Hospital Gilgit",
                             'assets/pic.jpg',
                             context,
                           ),
-                          _buildRequestItem(
+                          buildRequestItem(
                             "Naila",
                             "Dr. Raziq Hussain",
                             "PHQ Hospital Gilgit",
                             'assets/pic.jpg',
                             context,
                           ),
-                          _buildRequestItem(
+                          buildRequestItem(
                             "Tariq Ullah",
                             "Dr. Raziq Hussain",
                             "PHQ Hospital Gilgit",
@@ -153,104 +163,6 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Method to build the stats card
-  Widget _buildStatCard(
-      String title, String count, String imagePath, double cardWidth) {
-    return Container(
-      width: cardWidth,
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: 35,
-            height: 35,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 5),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            count,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Method to build a single request item
-  Widget _buildRequestItem(
-      String name, String referredBy, String hospital, String imagePath, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage(imagePath),
-            backgroundColor: Colors.indigo,
-          ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  "Referred by $referredBy",
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  hospital,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AdminRequest(),
-                ),
-              );
-            },
           ),
         ],
       ),

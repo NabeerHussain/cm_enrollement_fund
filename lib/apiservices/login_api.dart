@@ -3,68 +3,49 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final _baseUrl = "http://192.168.18.172:8000/api";
+  final String _baseUrl = "http://192.168.18.172:8000/api";
 
-  // Login API
   Future<Map<String, dynamic>> login(String email, String password) async {
-  try {
-    // Check internet connectivity
-    final connected = await _checkInternetConnection();
-    if (!connected) {
-      throw Exception("No internet connection. Please check your network.");
-    }
+    try {
+      final url = Uri.parse("$_baseUrl/login");
 
-    final url = Uri.parse("$_baseUrl/login");
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"login": email, "password": password}),
-    );
+      final response = await http
+          .post(
+            url,
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode({"login": email, "password": password}),
+          )
+          .timeout(
+            const Duration(seconds: 25),
+            onTimeout: () {
+              throw Exception("The connection timed out. Please try again later.");
+            },
+          );
 
-    // Check the response status code
-    if (response.statusCode == 200) {
-      // Decode the response body
-      final responseData = jsonDecode(response.body);
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${response.body}");
 
-      // Ensure the response has the expected structure
-      if (responseData["status"] == true && responseData.containsKey("user")) {
-        final user = responseData["user"];
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
 
-        // Check for required user fields
-        if (user != null &&
-            user.containsKey("name") &&
-            user.containsKey("user_type")) {
+        if (responseData["status"] == true) {
           return {
             "success": true,
-            "name": user["name"],
-            "userType": user["user_type"],
+            "user": responseData["user"],
+            "token": responseData["token"], // Ensure token is included in the response
           };
         } else {
-          throw Exception("Invalid user data in response.");
+          throw Exception(responseData["message"] ?? "Login failed.");
         }
+      } else if (response.statusCode == 401) {
+        throw Exception("Invalid email or password.");
       } else {
-        throw Exception(responseData["message"] ?? "Login failed.");
+        throw Exception("Error: Login failed with status code ${response.statusCode}.");
       }
-    } else if (response.statusCode == 401) {
-      throw Exception("Invalid email or password.");
-    } else {
-      throw Exception("Error: Login failed with status code ${response.statusCode}.");
-    }
-  } on SocketException {
-    throw Exception("No internet connection. Please check your network.");
-  } catch (e) {
-    throw Exception("Error logging in: $e");
-  }
-}
-
-
-  // Helper function to check internet connectivity
-  Future<bool> _checkInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup("google.com");
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException {
-      return false;
+      throw Exception("No internet connection. Please check your network.");
+    } catch (e) {
+      throw Exception("Error logging in: $e");
     }
   }
 }

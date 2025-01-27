@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import '../detail/request_details.dart';
+import '../adminrequest/admin_request.dart';
 // import '../detail/request_details.dart';
 
-class DashboardScreen extends StatelessWidget {
-  final String name;
-
-  DashboardScreen({required this.name});
-
+class DcScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -31,7 +27,7 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 40),
                 Text(
-                  'Welcome $name! ', // Dynamic value here $name!
+                  'Welcome ', // Dynamic value here ${userData['name']}!
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -251,7 +247,7 @@ class DashboardScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PatientDetailsPage(),
+                  builder: (context) => AdminRequest(),
                 ),
               );
             },
